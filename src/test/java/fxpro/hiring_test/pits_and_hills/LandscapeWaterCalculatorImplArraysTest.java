@@ -5,13 +5,13 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.Before;
 import org.junit.Test;
 
-public class LandscapeWaterCalculatorTest {
+public class LandscapeWaterCalculatorImplArraysTest {
 
-  private LandscapeWaterCalculator calculator;
+  private LandscapeWaterCalculatorImplArrays calculator;
 
   @Before
   public void createCalculator() {
-    calculator = new LandscapeWaterCalculator();
+    calculator = new LandscapeWaterCalculatorImplArrays();
   }
 
   @Test

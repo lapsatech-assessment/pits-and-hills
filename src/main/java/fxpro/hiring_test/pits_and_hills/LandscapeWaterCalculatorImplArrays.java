@@ -1,19 +1,10 @@
 package fxpro.hiring_test.pits_and_hills;
 
-public class LandscapeWaterCalculator {
+public class LandscapeWaterCalculatorImplArrays implements LandscapeWaterCalculator {
 
   static final int MAX_LANDSCAPE_LENGTH = 32_000;
   static final int MAX_LANDSCAPE_HEIGHT = 32_000;
 
-  /**
-   * Takes a landscape as parameter and calculate how many water could be
-   * collected inside pits only. Max number of positions of the landscape is
-   * 32000. Height must be between 0 and 32000.
-   * 
-   * @param landscape
-   *          presented as an array of heights
-   * @return amount of water which could be collected
-   */
   public long calculateWaterAmount(final int[] landscape) {
 
     if (landscape.length > MAX_LANDSCAPE_LENGTH)
