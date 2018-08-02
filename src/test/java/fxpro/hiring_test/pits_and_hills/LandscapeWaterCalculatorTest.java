@@ -2,17 +2,25 @@ package fxpro.hiring_test.pits_and_hills;
 
 import static org.assertj.core.api.Assertions.*;
 
-import org.junit.Before;
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
 
-public class LandscapeWaterCalculatorImplArraysTest {
+@RunWith(value = Parameterized.class)
+public class LandscapeWaterCalculatorTest {
 
-  private LandscapeWaterCalculatorImplArrays calculator;
-
-  @Before
-  public void createCalculator() {
-    calculator = new LandscapeWaterCalculatorImplArrays();
+  @Parameters
+  public static Collection<LandscapeWaterCalculator> data() {
+    return Arrays.asList(new LandscapeWaterCalculatorImplArrays(), new LandscapeWaterCalculatorImplSet());
   }
+
+  @Parameter
+  public LandscapeWaterCalculator calculator;
 
   @Test
   public void givenBeerMugLandscape_whenCalculate_thenReturnCorrectValue() {
