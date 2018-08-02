@@ -15,51 +15,48 @@ public class LandscapeWaterCalculatorTest {
   }
 
   @Test
-  public void givenToolLargeLandscapeArray_whenCalculate_thenThrowIllegalArgumentException() {
+  public void givenBeerMugLandscape_whenCalculate_thenReturnCorrectValue() {
 
     // given
-    final int[] landscape = new int[32_000 + 1];
+    final int[] landscape = new int[32_000];
+    landscape[0] = 32_000;
+    landscape[32_000 - 1] = 32_000;
 
     // when
-    final Throwable thrown = catchThrowable(() -> calculator.calculateWaterAmount(landscape));
+    final long amount = calculator.calculateWaterAmount(landscape);
 
     // then
-    assertThat(thrown)
-	.isInstanceOf(IllegalArgumentException.class)
-	.hasStackTraceContaining("Wrong landscape length")
-	.hasNoCause();
+    assertThat(amount)
+	.isEqualTo(32_000L * (32_000 - 2));
+
   }
 
   @Test
-  public void givenNegativeLandscapeValue_whenCalculate_thenThrowIllegalArgumentException() {
+  public void givenDoubleValueLandscape_whenCalculate_thenReturnZeroValue() {
 
     // given
-    final int[] landscape = new int[] { 1, 2, 3, 0, -100, 5 };
-
-    // when
-    final Throwable thrown = catchThrowable(() -> calculator.calculateWaterAmount(landscape));
+    final int[] landscape = { 2, 3 };
 
     // then
-    assertThat(thrown)
-	.isInstanceOf(IllegalArgumentException.class)
-	.hasStackTraceContaining("Wrong landscape height value")
-	.hasNoCause();
+    final long amount = calculator.calculateWaterAmount(landscape);
+
+    // when
+    assertThat(amount)
+	.isZero();
   }
 
   @Test
-  public void givenTooLargeLandscapeValue_whenCalculate_thenThrowIllegalArgumentException() {
+  public void givenEmptyLandscape_whenCalculate_thenReturnZeroValue() {
+
     // given
-    final int[] landscape = new int[] { 1, 320_001, 3, 0, 100, 5 };
+    final int[] landscape = {};
 
     // when
-    final Throwable thrown = catchThrowable(() -> calculator.calculateWaterAmount(landscape));
+    final long amount = calculator.calculateWaterAmount(landscape);
 
     // then
-    assertThat(thrown)
-	.isInstanceOf(IllegalArgumentException.class)
-	.hasStackTraceContaining("Wrong landscape height value")
-	.hasNoCause();
-
+    assertThat(amount)
+	.isZero();
   }
 
   /**
@@ -91,33 +88,6 @@ public class LandscapeWaterCalculatorTest {
     // then
     assertThat(amount)
 	.isEqualTo(7);
-  }
-
-  /**
-   * The result should be '9'
-   *
-   * <pre>
-    O ~ ~ ~ O
-    | ~ ~ O | O
-    | ~ O | | | ~ O
-    | O | | | | ~ |
-    | | | | | | ~ | O
-    | | | | | | O | |
-   *
-   * </pre>
-   */
-  @Test
-  public void givenLandscapeVariantFromTheTask_whenCalculate_thenReturnCorrectValue() {
-
-    // given
-    final int[] landscape = { 5, 2, 3, 4, 5, 4, 0, 3, 1 };
-
-    // when
-    final long amount = calculator.calculateWaterAmount(landscape);
-
-    // then
-    assertThat(amount)
-	.isEqualTo(9);
   }
 
   /**
@@ -181,6 +151,33 @@ public class LandscapeWaterCalculatorTest {
     // then
     assertThat(amount)
 	.isEqualTo(22);
+  }
+
+  /**
+   * The result should be '2'
+   *
+   * <pre>
+      4 | O
+      3 | | ~ O
+      2 | | ~ |
+      1 | | O |
+      0 | | | |
+        +------
+          0 1 2
+   * </pre>
+   */
+  @Test
+  public void givenLandscapeVariant4_whenCalculate_thenReturnCorrectValue() {
+
+    // given
+    final int[] landscape = { 4, 1, 3 };
+
+    // when
+    final long amount = calculator.calculateWaterAmount(landscape);
+
+    // then
+    assertThat(amount)
+	.isEqualTo(2);
   }
 
   /**
@@ -276,72 +273,46 @@ public class LandscapeWaterCalculatorTest {
   }
 
   /**
-   * The result should be '2'
+   * The result should be '9'
    *
    * <pre>
-      4 | O
-      3 | | ~ O
-      2 | | ~ |
-      1 | | O |
-      0 | | | |
-        +------
-          0 1 2
+    O ~ ~ ~ O
+    | ~ ~ O | O
+    | ~ O | | | ~ O
+    | O | | | | ~ |
+    | | | | | | ~ | O
+    | | | | | | O | |
+   *
    * </pre>
    */
   @Test
-  public void givenLandscapeVariant4_whenCalculate_thenReturnCorrectValue() {
+  public void givenLandscapeVariantFromTheTask_whenCalculate_thenReturnCorrectValue() {
 
     // given
-    final int[] landscape = { 4, 1, 3 };
+    final int[] landscape = { 5, 2, 3, 4, 5, 4, 0, 3, 1 };
 
     // when
     final long amount = calculator.calculateWaterAmount(landscape);
 
     // then
     assertThat(amount)
-	.isEqualTo(2);
+	.isEqualTo(9);
   }
 
   @Test
-  public void givenEmptyLandscape_whenCalculate_thenReturnZeroValue() {
+  public void givenNegativeLandscapeValue_whenCalculate_thenThrowIllegalArgumentException() {
 
     // given
-    final int[] landscape = {};
+    final int[] landscape = new int[] { 1, 2, 3, 0, -100, 5 };
 
     // when
-    final long amount = calculator.calculateWaterAmount(landscape);
+    final Throwable thrown = catchThrowable(() -> calculator.calculateWaterAmount(landscape));
 
     // then
-    assertThat(amount)
-	.isZero();
-  }
-
-  @Test
-  public void givenSignleValueLandscape_whenCalculate_thenReturnZeroValue() {
-
-    // given
-    final int[] landscape = { 1 };
-
-    // then
-    final long amount = calculator.calculateWaterAmount(landscape);
-
-    // when
-    assertThat(amount)
-	.isZero();
-  }
-
-  @Test
-  public void givenDoubleValueLandscape_whenCalculate_thenReturnZeroValue() {
-
-    // given
-    final int[] landscape = { 2, 3 };
-
-    // then
-    final long amount = calculator.calculateWaterAmount(landscape);
-
-    // when
-    assertThat(amount)
-	.isZero();
+    assertThat(thrown)
+	.isInstanceOf(IllegalArgumentException.class)
+	.hasStackTraceContaining("Wrong landscape height value")
+	.hasNoCause();
   }
 
   @Test
@@ -361,19 +332,49 @@ public class LandscapeWaterCalculatorTest {
   }
 
   @Test
-  public void givenBeerMugLandscape_whenCalculate_thenReturnCorrectValue() {
+  public void givenSignleValueLandscape_whenCalculate_thenReturnZeroValue() {
 
     // given
-    final int[] landscape = new int[32_000];
-    landscape[0] = 32_000;
-    landscape[32_000 - 1] = 32_000;
-
-    // when
-    final long amount = calculator.calculateWaterAmount(landscape);
+    final int[] landscape = { 1 };
 
     // then
-    assertThat(amount)
-	.isEqualTo(32_000L * (32_000 - 2));
+    final long amount = calculator.calculateWaterAmount(landscape);
 
+    // when
+    assertThat(amount)
+	.isZero();
+  }
+
+  @Test
+  public void givenTooLargeLandscapeValue_whenCalculate_thenThrowIllegalArgumentException() {
+
+    // given
+    final int[] landscape = new int[] { 1, 320_001, 3, 0, 100, 5 };
+
+    // when
+    final Throwable thrown = catchThrowable(() -> calculator.calculateWaterAmount(landscape));
+
+    // then
+    assertThat(thrown)
+	.isInstanceOf(IllegalArgumentException.class)
+	.hasStackTraceContaining("Wrong landscape height value")
+	.hasNoCause();
+
+  }
+
+  @Test
+  public void givenToolLargeLandscapeArray_whenCalculate_thenThrowIllegalArgumentException() {
+
+    // given
+    final int[] landscape = new int[32_000 + 1];
+
+    // when
+    final Throwable thrown = catchThrowable(() -> calculator.calculateWaterAmount(landscape));
+
+    // then
+    assertThat(thrown)
+	.isInstanceOf(IllegalArgumentException.class)
+	.hasStackTraceContaining("Wrong landscape length")
+	.hasNoCause();
   }
 }
