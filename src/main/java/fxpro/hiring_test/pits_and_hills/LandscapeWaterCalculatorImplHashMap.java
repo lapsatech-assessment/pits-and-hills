@@ -1,8 +1,9 @@
 package fxpro.hiring_test.pits_and_hills;
 
-import java.util.TreeMap;
+import java.util.Arrays;
+import java.util.HashMap;
 
-public class LandscapeWaterCalculatorImplSet implements LandscapeWaterCalculator {
+public class LandscapeWaterCalculatorImplHashMap implements LandscapeWaterCalculator {
 
   static final int MAX_LANDSCAPE_LENGTH = 32_000;
   static final int MAX_LANDSCAPE_HEIGHT = 32_000;
@@ -15,7 +16,7 @@ public class LandscapeWaterCalculatorImplSet implements LandscapeWaterCalculator
     if (landscape.length < 3)
       return 0;
 
-    final TreeMap<Integer, LeftRightPair> heights = new TreeMap<>();
+    final HashMap<Integer, LeftRightPair> heights = new HashMap<>();
 
     final int peakColumn;
     {
@@ -39,9 +40,12 @@ public class LandscapeWaterCalculatorImplSet implements LandscapeWaterCalculator
 
     long result = 0;
     final boolean[] taken = new boolean[landscape.length];
-    while (!heights.isEmpty()) {
 
-      final LeftRightPair pair = heights.pollLastEntry().getValue();
+    final Integer[] rows = heights.keySet().toArray(new Integer[0]);
+    Arrays.sort(rows);
+    for (int i = rows.length - 1; i >= 0; i--) {
+
+      final LeftRightPair pair = heights.get(rows[i]);
 
       int from = pair.left;
       int to = pair.right;
