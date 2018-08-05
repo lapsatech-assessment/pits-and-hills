@@ -2,7 +2,7 @@ package fxpro.hiring_test.pits_and_hills;
 
 import java.util.TreeMap;
 
-public class LandscapeWaterCalculatorImplSet implements LandscapeWaterCalculator {
+public class LandscapeWaterCalculatorImplTreeMap implements LandscapeWaterCalculator {
 
   static final int MAX_LANDSCAPE_LENGTH = 32_000;
   static final int MAX_LANDSCAPE_HEIGHT = 32_000;
