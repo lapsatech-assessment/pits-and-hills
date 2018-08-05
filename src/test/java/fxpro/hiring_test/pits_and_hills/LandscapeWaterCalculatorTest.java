@@ -16,7 +16,8 @@ public class LandscapeWaterCalculatorTest {
 
   @Parameters
   public static Collection<LandscapeWaterCalculator> data() {
-    return Arrays.asList(new LandscapeWaterCalculatorImplArrays(), new LandscapeWaterCalculatorImplSet());
+    return Arrays.asList(new LandscapeWaterCalculatorImplArrays(), new LandscapeWaterCalculatorImplTreeMap(),
+	new LandscapeWaterCalculatorImplHashMap());
   }
 
   @Parameter
