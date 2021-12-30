@@ -1,30 +1,35 @@
 package fxpro.hiring_test.pits_and_hills;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.stream.Stream;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.ArgumentsProvider;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 
-@RunWith(value = Parameterized.class)
 public class LandscapeWaterCalculatorTest {
 
-  @Parameters
-  public static Collection<LandscapeWaterCalculator> data() {
-    return Arrays.asList(new LandscapeWaterCalculatorImplArrays(), new LandscapeWaterCalculatorImplTreeMap(),
-	new LandscapeWaterCalculatorImplHashMap());
+  static class CalculatorImplementationsArgSource implements ArgumentsProvider {
+    @Override
+    public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
+      return Stream.of(
+          Arguments.of(new LandscapeWaterCalculatorImplArrays(),
+              LandscapeWaterCalculatorImplArrays.class.getSimpleName()),
+          Arguments.of(new LandscapeWaterCalculatorImplTreeMap(),
+              LandscapeWaterCalculatorImplTreeMap.class.getSimpleName()),
+          Arguments.of(new LandscapeWaterCalculatorImplHashMap(),
+              LandscapeWaterCalculatorImplHashMap.class.getSimpleName()));
+    }
   }
 
-  @Parameter
-  public LandscapeWaterCalculator calculator;
-
-  @Test
-  public void givenBeerMugLandscape_whenCalculate_thenReturnCorrectValue() {
+  @ParameterizedTest(name = "{index} using {1}")
+  @ArgumentsSource(CalculatorImplementationsArgSource.class)
+  public void givenBeerMugLandscape_whenCalculate_thenReturnCorrectValue(LandscapeWaterCalculator calculator,
+      String implName) {
 
     // given
     final int[] landscape = new int[32_000];
@@ -36,12 +41,14 @@ public class LandscapeWaterCalculatorTest {
 
     // then
     assertThat(amount)
-	.isEqualTo(32_000L * (32_000 - 2));
+        .isEqualTo(32_000L * (32_000 - 2));
 
   }
 
-  @Test
-  public void givenDoubleValueLandscape_whenCalculate_thenReturnZeroValue() {
+  @ParameterizedTest(name = "{index} using {1}")
+  @ArgumentsSource(CalculatorImplementationsArgSource.class)
+  public void givenDoubleValueLandscape_whenCalculate_thenReturnZeroValue(LandscapeWaterCalculator calculator,
+      String implName) {
 
     // given
     final int[] landscape = { 2, 3 };
@@ -51,11 +58,13 @@ public class LandscapeWaterCalculatorTest {
 
     // when
     assertThat(amount)
-	.isZero();
+        .isZero();
   }
 
-  @Test
-  public void givenEmptyLandscape_whenCalculate_thenReturnZeroValue() {
+  @ParameterizedTest(name = "{index} using {1}")
+  @ArgumentsSource(CalculatorImplementationsArgSource.class)
+  public void givenEmptyLandscape_whenCalculate_thenReturnZeroValue(LandscapeWaterCalculator calculator,
+      String implName) {
 
     // given
     final int[] landscape = {};
@@ -65,7 +74,7 @@ public class LandscapeWaterCalculatorTest {
 
     // then
     assertThat(amount)
-	.isZero();
+        .isZero();
   }
 
   /**
@@ -85,8 +94,10 @@ public class LandscapeWaterCalculatorTest {
                               1
    * </pre>
    */
-  @Test
-  public void givenLandscapeVariant1_whenCalculate_thenReturnCorrectValue() {
+  @ParameterizedTest(name = "{index} using {1}")
+  @ArgumentsSource(CalculatorImplementationsArgSource.class)
+  public void givenLandscapeVariant1_whenCalculate_thenReturnCorrectValue(LandscapeWaterCalculator calculator,
+      String implName) {
 
     // given
     final int[] landscape = { 4, 5, 3, 4, 5, 6, 6, 6, 7, 3, 3, 5 };
@@ -96,7 +107,7 @@ public class LandscapeWaterCalculatorTest {
 
     // then
     assertThat(amount)
-	.isEqualTo(7);
+        .isEqualTo(7);
   }
 
   /**
@@ -116,8 +127,10 @@ public class LandscapeWaterCalculatorTest {
                                1
    * </pre>
    */
-  @Test
-  public void givenLandscapeVariant2_whenCalculate_thenReturnCorrectValue() {
+  @ParameterizedTest(name = "{index} using {1}")
+  @ArgumentsSource(CalculatorImplementationsArgSource.class)
+  public void givenLandscapeVariant2_whenCalculate_thenReturnCorrectValue(LandscapeWaterCalculator calculator,
+      String implName) {
 
     // given
     final int[] landscape = { 6, 3, 3, 4, 2, 6, 6, 6, 7, 3, 3 };
@@ -127,7 +140,7 @@ public class LandscapeWaterCalculatorTest {
 
     // then
     assertThat(amount)
-	.isEqualTo(12);
+        .isEqualTo(12);
   }
 
   /**
@@ -148,8 +161,10 @@ public class LandscapeWaterCalculatorTest {
                               1
    * </pre>
    */
-  @Test
-  public void givenLandscapeVariant3_whenCalculate_thenReturnCorrectValue() {
+  @ParameterizedTest(name = "{index} using {1}")
+  @ArgumentsSource(CalculatorImplementationsArgSource.class)
+  public void givenLandscapeVariant3_whenCalculate_thenReturnCorrectValue(LandscapeWaterCalculator calculator,
+      String implName) {
 
     // given
     final int[] landscape = { 6, 3, 3, 3, 3, 8, 5, 5, 5, 3, 7 };
@@ -159,7 +174,7 @@ public class LandscapeWaterCalculatorTest {
 
     // then
     assertThat(amount)
-	.isEqualTo(22);
+        .isEqualTo(22);
   }
 
   /**
@@ -175,8 +190,10 @@ public class LandscapeWaterCalculatorTest {
           0 1 2
    * </pre>
    */
-  @Test
-  public void givenLandscapeVariant4_whenCalculate_thenReturnCorrectValue() {
+  @ParameterizedTest(name = "{index} using {1}")
+  @ArgumentsSource(CalculatorImplementationsArgSource.class)
+  public void givenLandscapeVariant4_whenCalculate_thenReturnCorrectValue(LandscapeWaterCalculator calculator,
+      String implName) {
 
     // given
     final int[] landscape = { 4, 1, 3 };
@@ -186,7 +203,7 @@ public class LandscapeWaterCalculatorTest {
 
     // then
     assertThat(amount)
-	.isEqualTo(2);
+        .isEqualTo(2);
   }
 
   /**
@@ -206,8 +223,10 @@ public class LandscapeWaterCalculatorTest {
                               1
    * </pre>
    */
-  @Test
-  public void givenLandscapeVariant5_whenCalculate_thenReturnCorrectValue() {
+  @ParameterizedTest(name = "{index} using {1}")
+  @ArgumentsSource(CalculatorImplementationsArgSource.class)
+  public void givenLandscapeVariant5_whenCalculate_thenReturnCorrectValue(LandscapeWaterCalculator calculator,
+      String implName) {
 
     // given
     final int[] landscape = { 0, 3, 3, 3, 3, 7, 5, 5, 5, 3, 0 };
@@ -217,7 +236,7 @@ public class LandscapeWaterCalculatorTest {
 
     // then
     assertThat(amount)
-	.isZero();
+        .isZero();
   }
 
   /**
@@ -236,8 +255,10 @@ public class LandscapeWaterCalculatorTest {
           0 1 2 3 4 5 6
    * </pre>
    */
-  @Test
-  public void givenLandscapeVariant6_whenCalculate_thenReturnCorrectValue() {
+  @ParameterizedTest(name = "{index} using {1}")
+  @ArgumentsSource(CalculatorImplementationsArgSource.class)
+  public void givenLandscapeVariant6_whenCalculate_thenReturnCorrectValue(LandscapeWaterCalculator calculator,
+      String implName) {
 
     // given
     final int[] landscape = { 4, 2, 3, 5, 7, 1, 6 };
@@ -247,7 +268,7 @@ public class LandscapeWaterCalculatorTest {
 
     // then
     assertThat(amount)
-	.isEqualTo(8);
+        .isEqualTo(8);
   }
 
   /**
@@ -267,8 +288,10 @@ public class LandscapeWaterCalculatorTest {
    *
    * </pre>
    */
-  @Test
-  public void givenLandscapeVariant7_whenCalculate_thenReturnCorrectValue() {
+  @ParameterizedTest(name = "{index} using {1}")
+  @ArgumentsSource(CalculatorImplementationsArgSource.class)
+  public void givenLandscapeVariant7_whenCalculate_thenReturnCorrectValue(LandscapeWaterCalculator calculator,
+      String implName) {
 
     // given 0 1 2 3 4 5 6 7 8 9
     final int[] landscape = { 4, 2, 3, 5, 0, 2, 0, 7, 1, 6 };
@@ -278,7 +301,7 @@ public class LandscapeWaterCalculatorTest {
 
     // then
     assertThat(amount)
-	.isEqualTo(21);
+        .isEqualTo(21);
   }
 
   /**
@@ -294,8 +317,10 @@ public class LandscapeWaterCalculatorTest {
    *
    * </pre>
    */
-  @Test
-  public void givenLandscapeVariantFromTheTask_whenCalculate_thenReturnCorrectValue() {
+  @ParameterizedTest(name = "{index} using {1}")
+  @ArgumentsSource(CalculatorImplementationsArgSource.class)
+  public void givenLandscapeVariantFromTheTask_whenCalculate_thenReturnCorrectValue(LandscapeWaterCalculator calculator,
+      String implName) {
 
     // given
     final int[] landscape = { 5, 2, 3, 4, 5, 4, 0, 3, 1 };
@@ -305,11 +330,14 @@ public class LandscapeWaterCalculatorTest {
 
     // then
     assertThat(amount)
-	.isEqualTo(9);
+        .isEqualTo(9);
   }
 
-  @Test
-  public void givenNegativeLandscapeValue_whenCalculate_thenThrowIllegalArgumentException() {
+  @ParameterizedTest(name = "{index} using {1}")
+  @ArgumentsSource(CalculatorImplementationsArgSource.class)
+  public void givenNegativeLandscapeValue_whenCalculate_thenThrowIllegalArgumentException(
+      LandscapeWaterCalculator calculator,
+      String implName) {
 
     // given
     final int[] landscape = new int[] { 1, 2, 3, 0, -100, 5 };
@@ -319,13 +347,15 @@ public class LandscapeWaterCalculatorTest {
 
     // then
     assertThat(thrown)
-	.isInstanceOf(IllegalArgumentException.class)
-	.hasStackTraceContaining("Wrong landscape height value")
-	.hasNoCause();
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasStackTraceContaining("Wrong landscape height value")
+        .hasNoCause();
   }
 
-  @Test
-  public void givenNullLandscape_whenCalculate_thenThrowNullPointerException() {
+  @ParameterizedTest(name = "{index} using {1}")
+  @ArgumentsSource(CalculatorImplementationsArgSource.class)
+  public void givenNullLandscape_whenCalculate_thenThrowNullPointerException(LandscapeWaterCalculator calculator,
+      String implName) {
 
     // given
     final int[] landscape = null;
@@ -335,13 +365,15 @@ public class LandscapeWaterCalculatorTest {
 
     // then
     assertThat(thrown)
-	.isInstanceOf(NullPointerException.class)
-	.hasNoCause();
+        .isInstanceOf(NullPointerException.class)
+        .hasNoCause();
 
   }
 
-  @Test
-  public void givenSignleValueLandscape_whenCalculate_thenReturnZeroValue() {
+  @ParameterizedTest(name = "{index} using {1}")
+  @ArgumentsSource(CalculatorImplementationsArgSource.class)
+  public void givenSignleValueLandscape_whenCalculate_thenReturnZeroValue(LandscapeWaterCalculator calculator,
+      String implName) {
 
     // given
     final int[] landscape = { 1 };
@@ -351,11 +383,14 @@ public class LandscapeWaterCalculatorTest {
 
     // when
     assertThat(amount)
-	.isZero();
+        .isZero();
   }
 
-  @Test
-  public void givenTooLargeLandscapeValue_whenCalculate_thenThrowIllegalArgumentException() {
+  @ParameterizedTest(name = "{index} using {1}")
+  @ArgumentsSource(CalculatorImplementationsArgSource.class)
+  public void givenTooLargeLandscapeValue_whenCalculate_thenThrowIllegalArgumentException(
+      LandscapeWaterCalculator calculator,
+      String implName) {
 
     // given
     final int[] landscape = new int[] { 1, 320_001, 3, 0, 100, 5 };
@@ -365,14 +400,17 @@ public class LandscapeWaterCalculatorTest {
 
     // then
     assertThat(thrown)
-	.isInstanceOf(IllegalArgumentException.class)
-	.hasStackTraceContaining("Wrong landscape height value")
-	.hasNoCause();
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasStackTraceContaining("Wrong landscape height value")
+        .hasNoCause();
 
   }
 
-  @Test
-  public void givenToolLargeLandscapeArray_whenCalculate_thenThrowIllegalArgumentException() {
+  @ParameterizedTest(name = "{index} using {1}")
+  @ArgumentsSource(CalculatorImplementationsArgSource.class)
+  public void givenToolLargeLandscapeArray_whenCalculate_thenThrowIllegalArgumentException(
+      LandscapeWaterCalculator calculator,
+      String implName) {
 
     // given
     final int[] landscape = new int[32_000 + 1];
@@ -382,8 +420,8 @@ public class LandscapeWaterCalculatorTest {
 
     // then
     assertThat(thrown)
-	.isInstanceOf(IllegalArgumentException.class)
-	.hasStackTraceContaining("Wrong landscape length")
-	.hasNoCause();
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasStackTraceContaining("Wrong landscape length")
+        .hasNoCause();
   }
 }
