@@ -6,7 +6,7 @@
   <parent>
     <groupId>fxpro.hiring-test</groupId>
     <artifactId>pits-and-hills</artifactId>
-    <version>CURRENT-SNAPSHOT</version>
+    <version>1.0</version>
   </parent>
 
   <artifactId>pits-and-hills-app</artifactId>
