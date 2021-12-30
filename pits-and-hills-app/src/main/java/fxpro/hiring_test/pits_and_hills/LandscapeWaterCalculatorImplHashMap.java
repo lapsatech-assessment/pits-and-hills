@@ -24,16 +24,16 @@ public class LandscapeWaterCalculatorImplHashMap implements LandscapeWaterCalcul
       int _index = -1;
       for (int i = 0; i < landscape.length; i++) {
 
-	if (landscape[i] < 0 || landscape[i] > MAX_LANDSCAPE_HEIGHT)
-	  throw new IllegalArgumentException(String.format("Wrong landscape height value '%1$d'", landscape[i]));
+        if (landscape[i] < 0 || landscape[i] > MAX_LANDSCAPE_HEIGHT)
+          throw new IllegalArgumentException(String.format("Wrong landscape height value '%1$d'", landscape[i]));
 
-	heights.computeIfAbsent(landscape[i], LeftRightPair::new)
-	    .acceptValue(i);
+        heights.computeIfAbsent(landscape[i], LeftRightPair::new)
+            .acceptValue(i);
 
-	if (_peak < landscape[i]) {
-	  _peak = landscape[i];
-	  _index = i;
-	}
+        if (_peak < landscape[i]) {
+          _peak = landscape[i];
+          _index = i;
+        }
       }
       peakColumn = _index;
     }
@@ -51,16 +51,16 @@ public class LandscapeWaterCalculatorImplHashMap implements LandscapeWaterCalcul
       int to = pair.right;
 
       if (from == to)
-	if (from > peakColumn)
-	  from = peakColumn;
-	else
-	  to = peakColumn;
+        if (from > peakColumn)
+          from = peakColumn;
+        else
+          to = peakColumn;
 
       for (int column = from; column <= to; column++)
-	if (landscape[column] < pair.height && !taken[column]) {
-	  result += pair.height - landscape[column];
-	  taken[column] = true;
-	}
+        if (landscape[column] < pair.height && !taken[column]) {
+          result += pair.height - landscape[column];
+          taken[column] = true;
+        }
     }
     return result;
   }
@@ -77,9 +77,9 @@ public class LandscapeWaterCalculatorImplHashMap implements LandscapeWaterCalcul
 
     LeftRightPair acceptValue(final int value) {
       if (left > value)
-	left = value;
+        left = value;
       if (right < value)
-	right = value;
+        right = value;
       return this;
     }
 
@@ -91,11 +91,11 @@ public class LandscapeWaterCalculatorImplHashMap implements LandscapeWaterCalcul
     @Override
     public boolean equals(Object obj) {
       if (obj == null)
-	return false;
+        return false;
       if (obj == this)
-	return true;
+        return true;
       if (!(obj instanceof LeftRightPair))
-	return false;
+        return false;
       final LeftRightPair othr = (LeftRightPair) obj;
       return othr.height == height;
     }
@@ -118,20 +118,20 @@ public class LandscapeWaterCalculatorImplHashMap implements LandscapeWaterCalcul
     int peak = 0;
     for (final int colHeight : land) {
       if (colHeight < 0 || colHeight > MAX_LANDSCAPE_HEIGHT)
-	throw new IllegalArgumentException(String.format("Wrong landscape height value '%1$d'", colHeight));
+        throw new IllegalArgumentException(String.format("Wrong landscape height value '%1$d'", colHeight));
       if (peak < colHeight)
-	peak = colHeight;
+        peak = colHeight;
     }
 
     for (int row = peak; row >= 0; row--) {
       for (final int height : land) {
-	if (height == row)
-	  System.out.print("O");
-	else if (height > row)
-	  System.out.print("|");
-	else
-	  System.out.print(" ");
-	System.out.print(" ");
+        if (height == row)
+          System.out.print("O");
+        else if (height > row)
+          System.out.print("|");
+        else
+          System.out.print(" ");
+        System.out.print(" ");
       }
       System.out.println();
     }
